@@ -1,4 +1,6 @@
-﻿using SistemaControle.Models;
+﻿using SistemaControle.Classes;
+using SistemaControle.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -42,16 +44,33 @@ namespace SistemaControle.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserId,UserName,Nome,Sobrenome,Telefone,Endereco,Photo,Estudante,Professor")] Usuario usuario)
+        public ActionResult Create(UsuarioView view)
         {
             if (ModelState.IsValid)
             {
-                db.Usuarios.Add(usuario);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                db.Usuarios.Add(view.Usuario);
+                try
+                {
+                    
+                    if(view.Foto !=null)
+                    {
+                        var pic = Utilidades.UploadPhoto(view.Foto);
+                        if (!string.IsNullOrEmpty(pic))
+                        {
+                            view.Usuario.Photo = string.Format("~/Content/Fotos/{0}", pic);
+                        }
+                    }
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
             }
 
-            return View(usuario);
+            return View(view);
         }
 
         // GET: Usuarios/Edit/5

@@ -1,3 +1,4 @@
+using SistemaControle.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +21,13 @@ namespace SistemaControle
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        private void CheckRoles()
+        {
+            Utilidades.CheckRole("Admin");
+            Utilidades.CheckRole("Professor");
+            Utilidades.CheckRole("Estudante");
         }
     }
 }
