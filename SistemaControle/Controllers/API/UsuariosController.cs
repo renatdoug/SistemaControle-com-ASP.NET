@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using SistemaControle.Models;
+using SistemaControle.Classes;
 
 namespace SistemaControle.Controllers.API
 {
@@ -115,8 +116,7 @@ namespace SistemaControle.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Usuarios
-        [ResponseType(typeof(Usuario))]
+        
         public IHttpActionResult PostUsuario(Usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -124,10 +124,20 @@ namespace SistemaControle.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            db.Usuarios.Add(usuario);
-            db.SaveChanges();
+            try
+            {
+                db.Usuarios.Add(usuario);
+                db.SaveChanges();
+                Utilidades.CreateUserASP(usuario.UserName);
+                Utilidades.AddRoleToUser(usuario.UserName, "Estudante");
+            }
+            catch (Exception ex)
+            {
 
-            return CreatedAtRoute("DefaultApi", new { id = usuario.UserId }, usuario);
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return this.Ok(usuario);
         }
 
         // DELETE: api/Usuarios/5
