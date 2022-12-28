@@ -61,6 +61,18 @@ namespace SistemaControle.Controllers
                         }
                     }
                     db.SaveChanges();
+
+                    Utilidades.CreateUserASP(view.Usuario.UserName);
+                    if (view.Usuario.Estudante)
+                    {
+                        Utilidades.AddRoleToUser(view.Usuario.UserName, "Estudante");
+                    }
+
+                    if (view.Usuario.Professor)
+                    {
+                        Utilidades.AddRoleToUser(view.Usuario.UserName, "Professor");
+                    }
+
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
