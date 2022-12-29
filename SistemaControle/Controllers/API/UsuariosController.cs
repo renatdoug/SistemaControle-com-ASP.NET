@@ -117,19 +117,29 @@ namespace SistemaControle.Controllers.API
         }
 
         
-        public IHttpActionResult PostUsuario(Usuario usuario)
+        public IHttpActionResult PostUsuario(UsuarioSenha usuarioSenha)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var usuario = new Usuario
+            {
+                Endereco = usuarioSenha.Endereco,
+                Professor = false,
+                Estudante = true,
+                Sobrenome = usuarioSenha.Sobrenome,
+                Telefone = usuarioSenha.Telefone,
+                UserName = usuarioSenha.UserName,
+            };
+
             try
             {
-                db.Usuarios.Add(usuario);
+            
+                db.Usuarios.Add(usuarioSenha);
                 db.SaveChanges();
-                Utilidades.CreateUserASP(usuario.UserName);
-                Utilidades.AddRoleToUser(usuario.UserName, "Estudante");
+                Utilidades.AddRoleToUser(usuarioSenha.UserName, "Estudante", usuarioSenha);
             }
             catch (Exception ex)
             {
@@ -137,7 +147,9 @@ namespace SistemaControle.Controllers.API
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return this.Ok(usuario);
+            usuarioSenha.UserId = usuario.UserId;
+
+            return this.Ok(usuarioSenha);
         }
 
         // DELETE: api/Usuarios/5

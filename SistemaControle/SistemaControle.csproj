@@ -199,6 +199,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Notas.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\UsuarioSenha.cs" />
     <Compile Include="Models\UsuarioView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
