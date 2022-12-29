@@ -85,6 +85,8 @@ namespace SistemaControle.Controllers
             return View(view);
         }
 
+
+
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -98,25 +100,49 @@ namespace SistemaControle.Controllers
                 return HttpNotFound();
             }
 
-            var view = new UsuarioView 
-            { 
-                Usuario = usuario 
+            var view = new UsuarioView
+            {
+                Usuario = usuario
             };
+
             return View(view);
         }
 
         // POST: Usuarios/Edit/5
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UsuarioView view)
         {
             if (ModelState.IsValid)
             {
+
+                var db2 = new ControleContext();
+                var oldUser = db2.Usuarios.Find(view.Usuario.UserId);
+                db2.Dispose();
+
+                if (view.Foto != null)
+                {
+                    var pic = Utilidades.UploadPhoto(view.Foto);
+                    if (!string.IsNullOrEmpty(pic))
+                    {
+                        view.Usuario.Photo = string.Format("~/Content/Fotos/{0}", pic);
+                    }
+                }
+                else
+                {
+                    view.Usuario.Photo = oldUser.Photo;
+                }
+
+                               
                 db.Entry(view.Usuario).State = EntityState.Modified;
                 try
                 {
+                    if (oldUser != null && oldUser.UserName != view.Usuario.UserName)
+                    {
+                        Utilidades.ChangeEmailUserASP(oldUser.UserName, view.Usuario.UserName);
+                    }
                     db.SaveChanges();
                 }
                 catch (Exception ex)
@@ -129,6 +155,7 @@ namespace SistemaControle.Controllers
             }
             return View(view.Usuario);
         }
+
 
         // GET: Usuarios/Delete/5
         public ActionResult Delete(int? id)

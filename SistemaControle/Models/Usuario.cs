@@ -49,8 +49,8 @@ namespace SistemaControle.Models
         [Display(Name = "Professor")]
         public bool Professor { get; set; }
 
-        //[JsonIgnore]
-       // public virtual ICollection<Grupos> Grupos { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Grupos> Grupos { get; set; }
 
        // [JsonIgnore]
        // public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }

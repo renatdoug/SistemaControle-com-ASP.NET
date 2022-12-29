@@ -19,5 +19,7 @@ namespace SistemaControle.Models
         }
 
         public System.Data.Entity.DbSet<SistemaControle.Models.Usuario> Usuarios { get; set; }
+
+        public System.Data.Entity.DbSet<SistemaControle.Models.Grupos> Grupos { get; set; }
     }
 }

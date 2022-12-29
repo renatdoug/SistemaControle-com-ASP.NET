@@ -23,9 +23,9 @@ namespace SistemaControle.Models
         [JsonIgnore]
         public virtual Usuario Professor { get; set; }
 
-        [JsonIgnore]
+       // [JsonIgnore]
 
-        public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }
+       // public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }
 
     }
 }

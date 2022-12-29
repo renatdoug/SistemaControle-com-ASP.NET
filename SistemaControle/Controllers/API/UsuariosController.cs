@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using SistemaControle.Models;
 using SistemaControle.Classes;
+using System.Web.UI.WebControls;
 
 namespace SistemaControle.Controllers.API
 {
@@ -95,11 +96,19 @@ namespace SistemaControle.Controllers.API
                 return BadRequest();
             }
 
+            var db2 = new ControleContext();
+            var oldUser = db2.Usuarios.Find(usuario.UserId);
+            db2.Dispose();
+
             db.Entry(usuario).State = EntityState.Modified;
 
             try
             {
                 db.SaveChanges();
+                if (oldUser != null && oldUser.UserName != usuario.UserName)
+                {
+                    Utilidades.ChangeEmailUserASP(oldUser.UserName, usuario.UserName);
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -113,7 +122,7 @@ namespace SistemaControle.Controllers.API
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.Ok(usuario);
         }
 
         
@@ -139,7 +148,8 @@ namespace SistemaControle.Controllers.API
             
                 db.Usuarios.Add(usuarioSenha);
                 db.SaveChanges();
-                Utilidades.AddRoleToUser(usuarioSenha.UserName, "Estudante", usuarioSenha);
+                Utilidades.CreateUserASP(usuarioSenha.UserName, usuarioSenha.Senha);
+               
             }
             catch (Exception ex)
             {
@@ -148,6 +158,8 @@ namespace SistemaControle.Controllers.API
             }
 
             usuarioSenha.UserId = usuario.UserId;
+            usuarioSenha.Professor = false;
+            usuarioSenha.Estudante = true;
 
             return this.Ok(usuarioSenha);
         }
