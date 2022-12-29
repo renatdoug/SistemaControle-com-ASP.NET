@@ -97,7 +97,12 @@ namespace SistemaControle.Controllers
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+
+            var view = new UsuarioView 
+            { 
+                Usuario = usuario 
+            };
+            return View(view);
         }
 
         // POST: Usuarios/Edit/5
@@ -105,15 +110,24 @@ namespace SistemaControle.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,UserName,Nome,Sobrenome,Telefone,Endereco,Photo,Estudante,Professor")] Usuario usuario)
+        public ActionResult Edit(UsuarioView view)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Entry(view.Usuario).State = EntityState.Modified;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(view);
+                }
                 return RedirectToAction("Index");
             }
-            return View(usuario);
+            return View(view.Usuario);
         }
 
         // GET: Usuarios/Delete/5
