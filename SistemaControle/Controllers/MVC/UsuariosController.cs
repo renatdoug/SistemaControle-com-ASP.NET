@@ -135,7 +135,7 @@ namespace SistemaControle.Controllers
                     view.Usuario.Photo = oldUser.Photo;
                 }
 
-                               
+                           
                 db.Entry(view.Usuario).State = EntityState.Modified;
                 try
                 {

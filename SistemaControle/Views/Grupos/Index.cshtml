@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<SistemaControle.Models.Grupos>
 
 @{
-    ViewBag.Title = "Grupo de Professores";
+    ViewBag.Title = "Disciplinas";
 }
 
-<h2>Index</h2>
+<h2>Lista de Disciplinas</h2>
 
 <p>
     @Html.ActionLink("Novo", "Create")
@@ -23,7 +23,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Professor.UserName)
+            @Html.DisplayFor(modelItem => item.Professor.NomeCompleto)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Descricao)

@@ -10,6 +10,7 @@ using SistemaControle.Models;
 
 namespace SistemaControle.Controllers.MVC
 {
+    [Authorize(Roles = "Professor")]
     public class GruposController : Controller
     {
         private ControleContext db = new ControleContext();
@@ -39,7 +40,7 @@ namespace SistemaControle.Controllers.MVC
         // GET: Grupos/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.Usuarios, "UserId", "UserName");
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Professor).OrderBy(u=>u.Nome).ThenBy(u=>u.Sobrenome), "UserId", "NomeCompleto");
             return View();
         }
 
