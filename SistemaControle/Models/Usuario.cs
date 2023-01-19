@@ -52,7 +52,7 @@ namespace SistemaControle.Models
         //[JsonIgnore]
         public virtual ICollection<Grupos> Grupos { get; set; }
 
-       // [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }
 
     }

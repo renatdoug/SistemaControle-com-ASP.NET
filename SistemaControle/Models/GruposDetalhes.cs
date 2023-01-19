@@ -27,7 +27,7 @@ namespace SistemaControle.Models
 
         public string GrupoEstudante { get { return string.Format("{0} / {1}", Grupos.Descricao, Estudante.NomeCompleto); } }
 
-        public virtual ICollection<Notas> Notas { get; set; }
+       // public virtual ICollection<Notas> Notas { get; set; }
 
 
     }
