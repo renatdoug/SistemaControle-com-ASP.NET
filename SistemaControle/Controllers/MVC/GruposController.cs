@@ -16,6 +16,26 @@ namespace SistemaControle.Controllers.MVC
     {
         private ControleContext db = new ControleContext();
 
+        //EXCLUIR ALUNO DO GRUPO(DISCIPLINA)
+        public ActionResult ExcluirEstudante(int ? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var gruposDetalhes = db.GruposDetalhes.Find(id);
+            if (gruposDetalhes == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.GruposDetalhes.Remove(gruposDetalhes);
+            db.SaveChanges();
+            return RedirectToAction(string.Format("Details/{0}", gruposDetalhes.GrupoId));
+        }
+
+
+
         //POST PARA ADD ALUNOS
         [HttpPost]
         public ActionResult AddEstudante(GruposDetalhes gruposDetalhes)

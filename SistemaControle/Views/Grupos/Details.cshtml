@@ -4,32 +4,108 @@
     ViewBag.Title = "Detailhes das Disciplinas";
 }
 
-<h2>Disciplinas</h2>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Disciplinas</h2>
 
-<div>
-    
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-           Professor
-        </dt>
+        <div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Professor.NomeCompleto)
-        </dd>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    Professor
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Professor.NomeCompleto)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </dt>
 
-    </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.Descricao)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Adicionar Aluno", "AddEstudante", new { id = Model.GrupoId }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Editar", "Edit", new { id = Model.GrupoId }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Voltar", "Index", new { }, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+
+    <div class="col-md-6">
+        <br /><br />
+
+        @if (!string.IsNullOrEmpty(Model.Professor.Photo))
+        {
+            <img src="@Url.Content(Model.Professor.Photo)" alt="Image" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+        }
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Adicionar Aluno", "AddEstudante", new { id = Model.GrupoId }) |
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GrupoId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<br /><br />
+
+<h4>Alunos matriculados nesta disciplina</h4>
+@if (Model.GruposDetalhes.Count == 0)
+{
+    <h5>Não tem alunos matriculados nessa disciplina</h5>
+}
+else
+{
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GruposDetalhes.FirstOrDefault().Estudante.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GruposDetalhes.FirstOrDefault().Estudante.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GruposDetalhes.FirstOrDefault().Estudante.Sobrenome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GruposDetalhes.FirstOrDefault().Estudante.Telefone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GruposDetalhes.FirstOrDefault().Estudante.Photo)
+            </th>
+            
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.GruposDetalhes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estudante.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estudante.NomeCompleto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estudante.Sobrenome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estudante.Telefone)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Estudante.Photo))
+                    {
+                        <img src="@Url.Content(item.Estudante.Photo)" alt="Image" style="width:50px;height:50px;max-width: 100%; height: auto;" />
+                    }
+
+                </td>
+               
+                <td>
+                    @Html.ActionLink("Excluir", "ExcluirEstudante", new { id = item.GruposDetalhesId }, new { @class = "btn btn-danger", onclick = "return confirm('Tem certeza que deseja excluir o aluno?')" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
