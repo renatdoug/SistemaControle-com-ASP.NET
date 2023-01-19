@@ -17,6 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Descricao)
         </th>
+        <th>
+            Alunos
+        </th>
         <th></th>
     </tr>
 
@@ -29,9 +32,12 @@
             @Html.DisplayFor(modelItem => item.Descricao)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.GrupoId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.GrupoId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.GrupoId })
+            @Html.DisplayFor(modelItem => item.GruposDetalhes.Count)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.GrupoId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.GrupoId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.GrupoId })
         </td>
     </tr>
 }

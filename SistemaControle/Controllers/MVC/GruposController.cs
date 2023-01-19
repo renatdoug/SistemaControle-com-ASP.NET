@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,6 +15,31 @@ namespace SistemaControle.Controllers.MVC
     public class GruposController : Controller
     {
         private ControleContext db = new ControleContext();
+
+        //POST PARA ADD ALUNOS
+        [HttpPost]
+        public ActionResult AddEstudante(GruposDetalhes gruposDetalhes)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var existe = db.GruposDetalhes.Where(gd => gd.GrupoId == gruposDetalhes.GrupoId && gd.UserId == gruposDetalhes.UserId).FirstOrDefault();
+                if(existe == null)
+                {
+                    db.GruposDetalhes.Add(gruposDetalhes);
+                    db.SaveChanges();
+                    return RedirectToAction(string.Format("Details/{0}", gruposDetalhes.GrupoId));
+                }
+
+                ModelState.AddModelError(string.Empty, "Aluno já matriculado");
+                
+            }
+
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Estudante).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto", gruposDetalhes.UserId);
+
+            return View(gruposDetalhes);
+
+        }
 
         //Add estudantes
         public ActionResult AddEstudante(int ? id)
@@ -29,18 +55,18 @@ namespace SistemaControle.Controllers.MVC
             }
            
 
-            var grupoDetalhes = new GruposDetalhes
+            var gruposDetalhes = new GruposDetalhes
             {
                 GrupoId = id.Value,
             };
 
             ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Estudante).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto");
             
-            return View(grupoDetalhes);
+            return View(gruposDetalhes);
 
         }
 
-
+       
         // GET: Grupos
         public ActionResult Index()
         {
