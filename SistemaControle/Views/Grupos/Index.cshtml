@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<SistemaControle.Models.Grupos>
 
 @{
-    ViewBag.Title = "Disciplinas";
+    ViewBag.Title = "Relação de Professores por Disciplina";
 }
 
-<h2>Lista de Disciplinas</h2>
+<h2>Relação de Professores por Disciplina</h2>
 
 <p>
-    @Html.ActionLink("Novo", "Create")
+    @Html.ActionLink("Adicionar novo Professor", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayForModel("Professor")
+            @Html.DisplayName("Professor")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Descricao)
