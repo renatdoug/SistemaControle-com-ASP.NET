@@ -15,6 +15,32 @@ namespace SistemaControle.Controllers.MVC
     {
         private ControleContext db = new ControleContext();
 
+        //Add estudantes
+        public ActionResult AddEstudante(int ? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Grupos grupos = db.Grupos.Find(id);
+            if (grupos == null)
+            {
+                return HttpNotFound();
+            }
+           
+
+            var grupoDetalhes = new GruposDetalhes
+            {
+                GrupoId = id.Value,
+            };
+
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Estudante).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto");
+            
+            return View(grupoDetalhes);
+
+        }
+
+
         // GET: Grupos
         public ActionResult Index()
         {

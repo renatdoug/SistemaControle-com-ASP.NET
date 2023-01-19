@@ -1,21 +1,21 @@
 ﻿@model SistemaControle.Models.Grupos
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detailhes das Disciplinas";
 }
 
-<h2>Details</h2>
+<h2>Disciplinas</h2>
 
 <div>
-    <h4>Grupos</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Professor.UserName)
+           Professor
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Professor.UserName)
+            @Html.DisplayFor(model => model.Professor.NomeCompleto)
         </dd>
 
         <dt>
@@ -29,6 +29,7 @@
     </dl>
 </div>
 <p>
+    @Html.ActionLink("Adicionar Aluno", "AddEstudante", new { id = Model.GrupoId }) |
     @Html.ActionLink("Edit", "Edit", new { id = Model.GrupoId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
