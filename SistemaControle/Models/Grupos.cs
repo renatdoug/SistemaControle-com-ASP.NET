@@ -19,13 +19,8 @@ namespace SistemaControle.Models
         public string Descricao { get; set; }
 
         public int UserId { get; set; }
-
-        [JsonIgnore]
         public virtual Usuario Professor { get; set; }
-
-       // [JsonIgnore]
-
-       // public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }
+        public virtual ICollection<GruposDetalhes> GruposDetalhes { get; set; }
 
     }
 }

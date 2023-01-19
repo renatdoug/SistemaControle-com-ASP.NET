@@ -58,7 +58,7 @@ namespace SistemaControle.Controllers.MVC
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.Usuarios, "UserId", "UserName", grupos.UserId);
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Professor).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto");
             return View(grupos);
         }
 
@@ -74,7 +74,8 @@ namespace SistemaControle.Controllers.MVC
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Usuarios, "UserId", "UserName", grupos.UserId);
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Professor).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto", grupos.GrupoId);
+            
             return View(grupos);
         }
 
@@ -91,7 +92,7 @@ namespace SistemaControle.Controllers.MVC
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.Usuarios, "UserId", "UserName", grupos.UserId);
+            ViewBag.UserId = new SelectList(db.Usuarios.Where(u => u.Professor).OrderBy(u => u.Nome).ThenBy(u => u.Sobrenome), "UserId", "NomeCompleto", grupos.GrupoId);
             return View(grupos);
         }
 

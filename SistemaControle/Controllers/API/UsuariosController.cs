@@ -64,9 +64,10 @@ namespace SistemaControle.Controllers.API
 
 
         // GET: api/Usuarios
-        public IQueryable<Usuario> GetUsuarios()
+        public List<Usuario> GetUsuarios()
         {
-            return db.Usuarios;
+            var usuarios = db.Usuarios.ToList();
+            return usuarios;
         }
 
         // GET: api/Usuarios/5
